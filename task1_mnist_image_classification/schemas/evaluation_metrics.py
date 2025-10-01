@@ -3,6 +3,7 @@ from typing import Optional
 import numpy as np
 from pydantic import BaseModel
 
+
 class EvaluationMetrics(BaseModel):
     """
     Container for evaluation metrics of a classifier.

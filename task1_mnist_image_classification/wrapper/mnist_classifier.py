@@ -1,10 +1,11 @@
-from typing import Tuple
+from typing import Tuple, Literal, Optional, Union
 
 import numpy as np
 
-from schemas.hyperparameter_validation import RFParams
+from schemas.hyperparameter_validation import RFParams, NNParams
 from schemas.evaluation_metrics import EvaluationMetrics
 from implementation.random_forest_classifier import RandomForestMnistClassifier
+from implementation.feed_forward_nn_classifier import FeedForwardNNMnistClassifier
 
 class MnistClassifier:
     """
@@ -16,21 +17,32 @@ class MnistClassifier:
         classifier: An instance of a specific MNIST classifier (e.g., RandomForestMnistClassifier).
     """
 
-    def __init__(self, algorithm: str, hyperparams: RFParams = None):
+    def __init__(self, 
+                 algorithm: Literal["rf", "nn"], 
+                 hyperparams: Optional[Union[RFParams, NNParams]] = None):
         """
         Initialize the MNIST classifier with the chosen algorithm.
 
         Args:
-            algorithm (str): The algorithm to use. Supported values:
+            algorithm (Literal["rf", "nn"]): The algorithm to use. Supported values:
                 - "rf": Random Forest
-            hyperparams (RFParams, optional): Hyperparameters specific to the chosen algorithm.
-                Defaults to None, in which case default hyperparameters are used.
+                - "nn": Feed-Forward Neural Network
+            hyperparams (Optional[Union[RFParams, NNParams]]): Hyperparameters specific to the chosen algorithm.
+                - For "rf": an instance of RFParams
+                - For "nn": an instance of NNParams
+                Defaults to None, in which case default hyperparameters for the chosen algorithm are used.
 
         Raises:
             ValueError: If an unknown algorithm string is provided.
         """
         if algorithm == "rf":
+            if not isinstance(hyperparams, (type(None), RFParams)):
+                raise TypeError("RFParams required for Random Forest")
             self.classifier = RandomForestMnistClassifier(hyperparams)
+        elif algorithm == "nn":
+            if not isinstance(hyperparams, (type(None), NNParams)):
+                raise TypeError("NNParams required for Feed Forward Neural Network")
+            self.classifier = FeedForwardNNMnistClassifier(hyperparams)
         else:
             raise ValueError(f"Unknown algorithm: {algorithm}")
 
