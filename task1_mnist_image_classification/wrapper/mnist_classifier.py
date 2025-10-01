@@ -2,10 +2,12 @@ from typing import Tuple, Literal, Optional, Union
 
 import numpy as np
 
-from schemas.hyperparameter_validation import RFParams, NNParams
 from schemas.evaluation_metrics import EvaluationMetrics
+from implementation.convolutional_nn_classifier import CNNMnistClassifier
+from schemas.hyperparameter_validation import RFParams, NNParams, CNNParams
 from implementation.random_forest_classifier import RandomForestMnistClassifier
 from implementation.feed_forward_nn_classifier import FeedForwardNNMnistClassifier
+
 
 class MnistClassifier:
     """
@@ -18,8 +20,8 @@ class MnistClassifier:
     """
 
     def __init__(self, 
-                 algorithm: Literal["rf", "nn"], 
-                 hyperparams: Optional[Union[RFParams, NNParams]] = None):
+                 algorithm: Literal["rf", "nn", "cnn"], 
+                 hyperparams: Optional[Union[RFParams, NNParams, CNNParams]] = None):
         """
         Initialize the MNIST classifier with the chosen algorithm.
 
@@ -27,9 +29,11 @@ class MnistClassifier:
             algorithm (Literal["rf", "nn"]): The algorithm to use. Supported values:
                 - "rf": Random Forest
                 - "nn": Feed-Forward Neural Network
-            hyperparams (Optional[Union[RFParams, NNParams]]): Hyperparameters specific to the chosen algorithm.
+                - "cnn": Convolutional Neural Network
+            hyperparams (Optional[Union[RFParams, NNParams, CNNParams]]): Hyperparameters specific to the chosen algorithm.
                 - For "rf": an instance of RFParams
                 - For "nn": an instance of NNParams
+                - For "cnn": an instance of CNNParams
                 Defaults to None, in which case default hyperparameters for the chosen algorithm are used.
 
         Raises:
@@ -43,6 +47,10 @@ class MnistClassifier:
             if not isinstance(hyperparams, (type(None), NNParams)):
                 raise TypeError("NNParams required for Feed Forward Neural Network")
             self.classifier = FeedForwardNNMnistClassifier(hyperparams)
+        elif algorithm == "cnn":
+            if not isinstance(hyperparams, (type(None), CNNParams)):
+                raise TypeError("CNNParams required for Convolutional Neural Network")
+            self.classifier = CNNMnistClassifier(hyperparams)
         else:
             raise ValueError(f"Unknown algorithm: {algorithm}")
 
@@ -87,3 +95,4 @@ class MnistClassifier:
                 - Numpy array of predicted labels.
         """
         return self.classifier.evaluate(X_test, y_test)
+    
