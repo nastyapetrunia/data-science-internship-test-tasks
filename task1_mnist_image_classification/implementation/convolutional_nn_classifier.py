@@ -4,8 +4,9 @@ import numpy as np
 import tensorflow as tf
 import matplotlib.pyplot as plt
 from tensorflow.keras import Sequential
-from tensorflow.keras.layers import Dense, Flatten, Dropout, Input, Conv2D, MaxPooling2D
 from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.callbacks import EarlyStopping
+from tensorflow.keras.layers import Dense, Flatten, Dropout, Input, Conv2D, MaxPooling2D
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
 
 from schemas.hyperparameter_validation import CNNParams
@@ -62,12 +63,19 @@ class CNNMnistClassifier(MnistClassifierInterface):
         """
         Train the CNN on training data.
         """
+        early_stop = EarlyStopping(
+            monitor='val_loss',  
+            patience=5,         
+            restore_best_weights=True 
+        )
+        
         history = self.model.fit(
             X_train, y_train,
             validation_data=(X_val, y_val) if X_val is not None else None,
             epochs=self.params.epochs,
             batch_size=self.params.batch_size,
-            verbose=1
+            verbose=1, 
+            callbacks=[early_stop]
         )
         self.recent_history = history
         return history
@@ -134,4 +142,3 @@ class CNNMnistClassifier(MnistClassifierInterface):
         plt.legend()
 
         plt.show()
-        
