@@ -3,7 +3,6 @@ import shutil
 import random
 from pathlib import Path
 
-import numpy as np
 from tqdm import tqdm
 from PIL import Image, ImageOps, ImageEnhance, ImageFilter
 
