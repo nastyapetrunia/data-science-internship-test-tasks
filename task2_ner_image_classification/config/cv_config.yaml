@@ -1,0 +1,13 @@
+# Paths
+use_dummy_data: true
+dummy_data:
+  train_dir: data/dummy_animals10/train
+  val_dir: data/dummy_animals10/val
+  test_dir: data/dummy_animals10/test
+  full_dataset_dir: data/dummy_animals10
+data:
+  train_dir: data/animals10/processed/train
+  val_dir: data/animals10/processed/val
+  test_dir: data/animals10/processed/test
+  full_dataset_dir: data/animals10/processed
+  full_dataset_raw: data/animals10/raw-img

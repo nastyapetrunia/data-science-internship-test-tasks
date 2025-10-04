@@ -1,3 +1,4 @@
 kaggle==1.7.4.5
 matplotlib==3.10.6
 numpy==2.3.3
+tensorflow==2.20.0

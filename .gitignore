@@ -1,5 +1,10 @@
 venv/
 __pycache__
 .DS_Store
-task2_ner_image_classification/data/
+
+animals10/
+animals10.zip
+
 .env
+
+temp_copy_dummy_data.py
