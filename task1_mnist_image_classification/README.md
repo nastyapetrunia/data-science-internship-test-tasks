@@ -35,7 +35,6 @@ All models implement a common interface (`MnistClassifierInterface`) and are acc
 
 ```bash
 git clone <repository-url>
-cd mnist-classification
 ```
 
 ### Step 2: Create Virtual Environment (Recommended)
@@ -53,7 +52,7 @@ source venv/bin/activate
 ### Step 3: Install Dependencies
 
 ```bash
-pip install -r requirements.txt
+pip install -r task1_mnist_image_classification/requirements.txt
 ```
 
 ### Required Packages

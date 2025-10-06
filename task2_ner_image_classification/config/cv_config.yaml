@@ -2,7 +2,7 @@
 use_default_config: true  # Set to false to override defaults below (CNN/Transfer Learning Params)
 
 # Data
-use_dummy_data: false
+use_dummy_data: true
 dummy_data:
   train_dir: task2_ner_image_classification/data/dummy_animals10/train
   val_dir: task2_ner_image_classification/data/dummy_animals10/val

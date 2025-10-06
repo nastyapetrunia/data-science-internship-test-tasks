@@ -1,4 +1,4 @@
-import yaml
+import argparse
 from pathlib import Path
 
 import tensorflow as tf
@@ -144,4 +144,13 @@ def main(config_path: str):
 
 
 if __name__ == "__main__": 
-    main("task2_ner_image_classification/config/cv_config.yaml")
+    parser = argparse.ArgumentParser(description="Train CV model")
+    parser.add_argument("--config", type=str, required=True, help="Path to YAML config file")
+    args = parser.parse_args()
+
+    config_path = args.config or input("Enter path to config file: ")
+
+    if not Path(config_path).exists():
+        raise FileNotFoundError(f"Config file not found: {config_path}")
+
+    main(config_path=config_path)

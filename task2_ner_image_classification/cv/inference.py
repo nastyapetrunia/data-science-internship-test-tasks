@@ -1,8 +1,5 @@
-import os
-from glob import glob
+import argparse
 from pathlib import Path
-
-import tensorflow as tf
 
 from task2_ner_image_classification.utils.general import print_section_separator
 from task2_ner_image_classification.cv.utils.general import load_config
@@ -60,4 +57,18 @@ def run_cv_inference(config_path: str, data_path: str):
 
 
 if __name__ == "__main__": 
-    run_cv_inference("task2_ner_image_classification/config/cv_config.yaml", "/Users/anastasiiapetrunia/Downloads/2.png")
+    parser = argparse.ArgumentParser(description="Run CV inference on image(s).")
+    parser.add_argument("--config", type=str, default=None, help="Path to CV config YAML file.")
+    parser.add_argument("--data", type=str, default=None, help="Path to image or folder of images.")
+    args = parser.parse_args()
+
+    config_path = args.config or input("Enter path to config file: ")
+    data_path = args.data or input("Enter path to image or folder: ")
+
+    if not Path(config_path).exists():
+        raise FileNotFoundError(f"Config file not found: {config_path}")
+    if not Path(data_path).exists():
+        raise FileNotFoundError(f"Data path not found: {data_path}")
+
+    run_cv_inference(config_path, data_path)
+    run_cv_inference()
