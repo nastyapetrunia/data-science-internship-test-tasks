@@ -2,7 +2,9 @@ import math
 import shutil
 import random
 from pathlib import Path
+from typing import List, Optional
 
+import numpy as np
 from tqdm import tqdm
 from PIL import Image, ImageOps, ImageEnhance, ImageFilter
 
@@ -140,21 +142,30 @@ def split_dataset(dataset_path: str, output_path: str,
     print(f"Dataset split complete! Saved to {output_path}")
     
 def resize_images(
-    dataset_path: str,
+    data_path: str,
     target_size=(224, 224),
-    keep_aspect_ratio=True
-):
+    keep_aspect_ratio=True,
+    override_imgs=True) -> Optional[List]:
     """
-    Preprocess images by resizing (and optionally padding) to target_size
+    Resize one image or all images in a directory to target_size.
 
-    :param dataset_path: Path to the raw dataset with class subfolders
-    :param target_size: Tuple of (width, height) for resized images
-    :param keep_aspect_ratio: If True, pad images to maintain original aspect ratio
+    :param data_path: Path to an image file or directory.
+    :param target_size: (width, height) for resized images.
+    :param keep_aspect_ratio: If True, pad to maintain aspect ratio.
+    :param override_imgs: If True, overwrite the original files.
+    :return: List of paths to resized images or None if override_imgs is False
     """
-    dataset_path = Path(dataset_path)
-    
+    data_path = Path(data_path)
     img_extensions = (".png", ".jpg", ".jpeg", ".bmp", ".tiff")
-    img_paths = [p for p in dataset_path.rglob("*") if p.suffix.lower() in img_extensions]
+
+    if data_path.is_file() and data_path.suffix.lower() in img_extensions:
+        img_paths = [data_path]
+    elif data_path.is_dir():
+        img_paths = [p for p in data_path.rglob("*") if p.suffix.lower() in img_extensions]
+    else:
+        raise ValueError(f"Invalid path: {data_path}")
+
+    imgs = []
 
     for img_path in tqdm(img_paths, desc="Resizing images"):
         try:
@@ -165,19 +176,27 @@ def resize_images(
             else:
                 img = img.resize(target_size)
 
-            img.save(img_path) 
+            if override_imgs:
+                img.save(img_path)
+            else:
+                imgs.append(np.array(img))
+
         except Exception as e:
             print(f"⚠️ Could not process {img_path}: {e}")
 
-    print(f"✅ All images resized to {target_size} in {dataset_path}")
+    print(f"✅ Resized {len(imgs)} images to {target_size}")
+    imgs = np.stack(imgs, axis=0)
+
+    if not override_imgs:
+        return imgs, img_paths
 
 
-raw_dataset = "task2_ner_image_classification/data/animals10/raw-img"    
-processed_dataset = "task2_ner_image_classification/data/animals10/processed" 
+# raw_dataset = "task2_ner_image_classification/data/animals10/raw-img"    
+# processed_dataset = "task2_ner_image_classification/data/animals10/processed" 
 
-split_dataset(raw_dataset, processed_dataset)
+# split_dataset(raw_dataset, processed_dataset)
 
-train_folder = "task2_ner_image_classification/data/animals10/processed/train"
-oversample_with_augmentation(train_folder)
+# train_folder = "task2_ner_image_classification/data/animals10/processed/train"
+# oversample_with_augmentation(train_folder)
 
-resize_images(processed_dataset, target_size=(224,224), keep_aspect_ratio=True)
+# resize_images(processed_dataset, target_size=(224,224), keep_aspect_ratio=True, override_imgs=True)
