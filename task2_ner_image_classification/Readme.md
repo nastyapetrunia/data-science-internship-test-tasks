@@ -220,8 +220,11 @@ The complete verification pipeline combines both models:
 5. Return boolean result (True if they match, False otherwise)
 
 **Usage:**
+
 ```bash
-python pipeline_runner.py \
+python -m task2_ner_image_classification.pipeline.pipeline_runner \
+  --ner_config "task2_ner_image_classification/config/ner_config.yaml" \
+  --cv_config "task2_ner_image_classification/config/cv_config.yaml" \
   --sentence "There is a dog but no cat here." \
   --image "task2_ner_image_classification/data/test_pipeline/1.png"
 ```
