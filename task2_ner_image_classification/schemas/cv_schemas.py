@@ -112,7 +112,7 @@ class TransferLearningParams(BaseModel):
         "mobilenetv2",
         "vgg16"
     ] = Field(
-        default="resnet50",
+        default="efficientnetb0",
         description="Pretrained backbone name from tf.keras.applications."
     )
 

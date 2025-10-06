@@ -71,4 +71,3 @@ if __name__ == "__main__":
         raise FileNotFoundError(f"Data path not found: {data_path}")
 
     run_cv_inference(config_path, data_path)
-    run_cv_inference()

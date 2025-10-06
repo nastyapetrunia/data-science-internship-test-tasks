@@ -157,7 +157,7 @@ The NER training dataset was created from scratch to match the 10 animal classes
 **Training Details:**
 - **Base model:** `google/mobilebert-uncased`
 - **Training approach:** Fine-tuning the transformer-based NER head on a custom dataset of 10 animal classes and their synonyms (e.g., *cat/kitty*, *dog/puppy*, etc.)
-- **Epochs:** 23 (with early stopping when loss plateaued)
+- **Epochs:** 34 (with early stopping when loss plateaued)
 - **Learning rate:** Default from spaCy’s transformer training configuration (`2e-5`)
 
 **Usage:**
