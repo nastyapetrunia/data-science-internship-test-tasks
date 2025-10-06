@@ -1,0 +1,4 @@
+data:
+  train_dir: task2_ner_image_classification/data/animals_ner.json
+model:
+  save_dir: task2_ner_image_classification/models/ner

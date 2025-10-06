@@ -2,3 +2,6 @@ kaggle==1.7.4.5
 matplotlib==3.10.6
 numpy==2.3.3
 tensorflow==2.20.0
+keras==3.10.0
+spacy==3.8.7
+spacy-transformers==1.3.9

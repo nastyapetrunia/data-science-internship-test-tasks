@@ -8,3 +8,4 @@ animals10.zip
 .env
 
 temp_copy_dummy_data.py
+resnet50_classifier.keras
