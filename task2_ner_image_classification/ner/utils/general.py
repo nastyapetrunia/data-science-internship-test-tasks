@@ -1,4 +1,27 @@
+import re
 import yaml
+
+NEGATIONS = {"no", "not", "none", "never", "without", "doesn't", "isn't", "aren't"}
+
+
+def is_entity_negated(entity: str, text: str) -> bool:
+    """
+    Returns True if the entity is negated in the text.
+    Looks for negation words before the entity in the sentence, separated by punctuation.
+    """
+    text_lower = text.lower()
+    words = re.findall(r"\w+|[^\w\s]", text_lower)
+    entity_lower = entity.lower()
+    
+    for i, word in enumerate(words):
+        if entity_lower == word:
+            for prev_word in reversed(words[:i]):
+                if prev_word in {",", ".", ";", "!"}:  
+                    break
+                if prev_word in NEGATIONS:
+                    return True
+    return False
+
 
 def load_config(config_path: str) -> dict:
     """Load YAML config."""
@@ -23,6 +46,8 @@ entities = [   "cat", "kitty",
     "sheep", "lamb",
     "squirrel", "chipmunk",
     "elephant", "pachyderm"]
+
+
 def find_entities(train_data, entities = entities, label = "ANIMAL"):
     results = []
     for text, _ in train_data:

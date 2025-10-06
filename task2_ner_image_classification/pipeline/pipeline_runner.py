@@ -12,7 +12,11 @@ if __name__ == "__main__":
         "A heifer and a hen were grazing near the barn.",
         "Look at that tarantula crawling over the branch next to the pony.",
         "The lamb and the chipmunk were both nibbling on leaves.",
-        "An elephant and a butterfly appeared near the watering hole."
+        "There is no elephant but a butterfly here.",
+        "There is an elephant but no butterfly here.",
+        "I see no butterfly here.",
+        "I see no elephant here.",
+        "I see a cat and no elephant here."
     ]
 
     images = [
@@ -25,7 +29,7 @@ if __name__ == "__main__":
     ]
 
     current_sentence = sentences[-1]
-    current_image = images[-1]
+    current_image = images[3]
     
     result = pipeline.run(current_sentence, current_image)
     print(f"Result: {result}")
